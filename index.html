@@ -395,7 +395,7 @@ const DATA = {
 
   kpis1: [
     { label:"Transferencias", value:"$1,224,490.43", sub:"", trend:"" },
-    { label:"Ventas", value:"$547,783.43", sub:"", trend:"" },
+    { label:"Ventas", value:"547,783.43", sub:"", trend:"" },
     
   ],
 
@@ -414,10 +414,10 @@ const DATA = {
   ],
 
   transfers: [
-    { label:"Compradas", value:78, color:"#1C7C7C" },
-    { label:"En proceso", value:5, color:"#E0972C" },
-    { label:"Rechazada", value:54, color:"#C1543A" },
-    { label:"Sin capacidad", value:30, color:"#6B7A8D" },
+    { label:"Compradas", value:78, amount:"$4,793,200.23", color:"#1C7C7C" },
+    { label:"En proceso", value:5, amount:"$678,500.00", color:"#E0972C" },
+    { label:"Rechazada", value:54, amount:"$3,213,443.00", color:"#C1543A" },
+    { label:"Sin capacidad", value:30, amount:"$1,810,328.00", color:"#6B7A8D" },
   ],
 
   bases: [
@@ -589,7 +589,7 @@ const DATA = {
     pieWrapper.appendChild(label);
   });
 
-  // Leyenda
+   // Leyenda
   const legend = document.getElementById('transferLegend');
   DATA.transfers.forEach(t => {
     const pct = ((t.value / transferTotal) * 100).toFixed(1);
@@ -599,11 +599,10 @@ const DATA = {
           <span class="legend-swatch" style="background:${t.color}"></span>
           ${t.label}
           <b>${pct}%</b>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:#6B7A8D; margin-left:8px;">${t.amount}</span>
         </div>
-        <div class="legend-sub">${fmt(t.value)}</div>
       </div>`;
   });
-
   /* ====================== RENDER: Bases table ====================== */
   const basesBody = document.getElementById('basesBody');
   document.getElementById('basesCount').textContent = DATA.bases.length;
