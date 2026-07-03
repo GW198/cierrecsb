@@ -448,7 +448,6 @@ const DATA = {
     { agente:"MAGALY HERNADEZ", turno:"MEDIO TIEMPO", llamadas:4925, contacto:4679, contactoEfe:1674, interesados:33, transferencias:11, ventas:5, monto:185000, efectividad:45 },
     { agente:"NADIRAM RESENDIZ", turno:"MEDIO TIEMPO", llamadas:5028, contacto:4672, contactoEfe:752, interesados:17, transferencias:6, ventas:2, monto:75000, efectividad:33 },
     { agente:"PACHECO GONZALEZ JAIME", turno:"TIEMPO COMPLETO", llamadas:4208, contacto:3717, contactoEfe:575, interesados:87, transferencias:16, ventas:4, monto:185500, efectividad:25 },
-    { agente:"PADILLA TORRES ERICA TERESA", turno:"TIEMPO COMPLETO", llamadas:640, contacto:346, contactoEfe:114, interesados:4, transferencias:11, ventas:3, monto:64065.07, efectividad:27 },
     { agente:"SANCHEZ ARELLANO JATZIRI NOHEMI", turno:"MEDIO TIEMPO", llamadas:3048, contacto:2963, contactoEfe:1305, interesados:18, transferencias:10, ventas:5, monto:810000, efectividad:50 },
     { agente:"ZAVALA SANCHEZ JESUS ANGEL", turno:"MEDIO TIEMPO", llamadas:1250, contacto:1028, contactoEfe:597, interesados:19, transferencias:5, ventas:1, monto:43000, efectividad:20 },
   ],
@@ -628,11 +627,14 @@ const DATA = {
       </tr>`;
   });
 
-  /* ====================== RENDER: Agents table ====================== */
+    /* ====================== RENDER: Agents table ====================== */
   const agentsBody = document.getElementById('agentsBody');
   document.getElementById('agentsCount').textContent = DATA.agents.length;
 
-  DATA.agents.forEach(a => {
+  // Ordenar agentes de mayor a menor efectividad
+  const sortedAgents = [...DATA.agents].sort((a, b) => b.efectividad - a.efectividad);
+
+  sortedAgents.forEach(a => {
     let badge = { cls: 'good', txt: 'Óptimo' };
     if (a.efectividad < 30) badge = { cls: 'bad', txt: 'Bajo' };
     else if (a.efectividad < 45) badge = { cls: 'warn', txt: 'Regular' };
