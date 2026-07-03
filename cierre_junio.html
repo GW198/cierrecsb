@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cierre Junio 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10233B;
+    --paper:#F3F5F3;
+    --card:#FFFFFF;
+    --teal:#1C7C7C;
+    --teal-dark:#125858;
+    --amber:#E0972C;
+    --moss:#3F8355;
+    --clay:#C1543A;
+    --steel:#6B7A8D;
+    --line:#E2E6E4;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    padding-bottom:60px;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .display{font-family:'Space Grotesk',sans-serif;}
+
+  /* ===== HEADER ===== */
+  header{
+    background:var(--ink);
+    color:#fff;
+    padding:28px 40px 34px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute; left:0; right:0; bottom:0;
+    height:3px;
+    background:repeating-linear-gradient(90deg, var(--teal) 0 18px, transparent 18px 26px);
+    opacity:.85;
+  }
+  .header-row{
+    display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;
+    max-width:1320px; margin:0 auto;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:#7FBFBF; margin-bottom:8px;
+  }
+  h1{
+    font-family:'Space Grotesk',sans-serif; font-weight:700;
+    font-size:34px; letter-spacing:-.01em;
+  }
+  .period-pill{
+    font-family:'JetBrains Mono',monospace; font-size:12.5px;
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+    padding:8px 14px; border-radius:20px; color:#DCE6E6;
+    display:flex; align-items:center; gap:8px;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--amber);}
+
+  main{max-width:1320px; margin:0 auto; padding:0 40px;}
+
+  /* ===== KPI ROW ===== */
+  .kpi-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-top:-30px;
+  }
+  .kpi-card{
+    background:var(--card);
+    border-radius:12px;
+    padding:20px 22px;
+    box-shadow:0 10px 24px -18px rgba(16,35,59,.35), 0 1px 0 rgba(16,35,59,.04);
+    border:1px solid var(--line);
+    position:relative;
+  }
+  .kpi-label{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--steel); font-weight:600; margin-bottom:10px;
+  }
+  .kpi-value{
+    font-family:'JetBrains Mono',monospace; font-weight:700;
+    font-size:30px; color:var(--ink); line-height:1;
+  }
+  .kpi-sub{margin-top:10px; font-size:12.5px; display:flex; align-items:center; gap:6px; color:var(--steel);}
+  .kpi-sub.up{color:var(--moss);}
+  .kpi-sub.down{color:var(--clay);}
+  .kpi-sub.flat{color:var(--steel);}
+  .trend-icon{display:inline-block; font-size:16px; line-height:1;}
+  .trend-up{color:var(--moss);}
+  .trend-down{color:var(--clay);}
+
+  /* ===== SECTION SHELL ===== */
+  .section{
+    background:var(--card);
+    border-radius:14px;
+    border:1px solid var(--line);
+    padding:26px 28px 30px;
+    margin-top:22px;
+  }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:baseline; margin-bottom:20px; flex-wrap:wrap; gap:8px;
+  }
+  .section-title{
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:18px;
+  }
+  .section-note{font-size:12px; color:var(--steel); font-family:'JetBrains Mono',monospace;}
+
+  .grid-2{display:grid; grid-template-columns:1.15fr .85fr; gap:22px;}
+
+  /* ===== GOAL PROGRESS ===== */
+  .goal-row{margin-bottom:18px;}
+  .goal-row:last-child{margin-bottom:0;}
+  .goal-top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:7px;}
+  .goal-name{font-weight:600; font-size:14px;}
+  .goal-nums{font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--steel);}
+  .goal-nums b{color:var(--ink);}
+  .goal-track{
+    height:10px; border-radius:6px; background:var(--paper); overflow:hidden; border:1px solid var(--line);
+  }
+  .goal-fill{
+    height:100%; border-radius:6px;
+    background:linear-gradient(90deg, var(--teal-dark), var(--teal));
+    display:flex; align-items:center; justify-content:flex-end;
+  }
+  .goal-fill.warn{background:linear-gradient(90deg,#B67418,var(--amber));}
+
+  /* ===== FUNNEL ===== */
+  .funnel-wrap{display:flex; flex-direction:column; gap:0; margin-top:6px;}
+  .funnel-step{display:grid; grid-template-columns:150px 1fr 90px; align-items:center; gap:14px; position:relative; padding:9px 0;}
+  .funnel-step:not(:last-child)::after{
+    content:""; position:absolute; left:150px; right:90px; bottom:0; height:1px;
+    background:repeating-linear-gradient(90deg,var(--line) 0 5px, transparent 5px 9px);
+  }
+  .funnel-label{font-size:13px; font-weight:600; color:var(--ink);}
+  .funnel-bar-bg{height:26px; background:var(--paper); border-radius:5px; border:1px solid var(--line); overflow:hidden;}
+  .funnel-bar{
+    height:100%;
+    background:linear-gradient(90deg, var(--teal-dark), var(--teal));
+    display:flex; align-items:center; padding-left:10px;
+    font-family:'JetBrains Mono',monospace; color:#fff; font-size:11.5px; font-weight:600;
+    white-space:nowrap;
+  }
+  .funnel-pct{font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--steel); text-align:right;}
+  .funnel-pct b{color:var(--teal-dark); font-size:13.5px;}
+
+  /* ===== TRANSFER STATUS - PIE CHART CON CSS ===== */
+  .transfer-container{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:30px;
+    flex-wrap:wrap;
+  }
+  .pie-wrapper {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    flex-shrink: 0;
+  }
+  .pie-chart {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    position: relative;
+  }
+  .pie-chart::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 62px;
+    height: 62px;
+    background: white;
+    border-radius: 50%;
+    z-index: 2;
+  }
+  .pie-label {
+    position: absolute;
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 12px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    pointer-events: none;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    line-height: 1.2;
+  }
+  .pie-label small {
+    font-size: 9px;
+    font-weight: 500;
+    opacity: 0.9;
+    display: block;
+  }
+  .status-legend{display:flex; flex-direction:column; gap:12px; justify-content:center;}
+  .legend-item{display:flex; align-items:center; gap:10px; font-size:13.5px;}
+  .legend-swatch{width:14px; height:14px; border-radius:4px; flex-shrink:0;}
+  .legend-item b{margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:13px;}
+  .legend-sub{color:var(--steel); font-size:11.5px; margin-left:24px;}
+
+  /* ===== TABLES ===== */
+  .table-scroll{overflow-x:auto;}
+  table{width:100%; border-collapse:collapse; font-size:13px; min-width:700px;}
+  thead th{
+    text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--steel); font-weight:600; padding:0 8px 10px; border-bottom:1px solid var(--line);
+    white-space:nowrap;
+  }
+  tbody td{padding:10px 8px; border-bottom:1px solid var(--line);}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--paper);}
+  td.num{font-family:'JetBrains Mono',monospace; text-align:right;}
+  td.center{text-align:center;}
+  .campaign-tag{
+    display:inline-block; padding:2px 8px; border-radius:20px; font-size:10.5px; font-weight:600;
+    background:rgba(28,124,124,.1); color:var(--teal-dark); white-space:nowrap;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:600; font-family:'JetBrains Mono',monospace;
+    padding:2px 8px; border-radius:20px;
+  }
+  .badge.ok{background:rgba(63,131,85,.12); color:var(--moss);}
+  .badge.warn{background:rgba(224,151,44,.15); color:#A66A16;}
+  .badge.bad{background:rgba(193,84,58,.12); color:var(--clay);}
+  .badge.good{background:rgba(28,124,124,.12); color:var(--teal-dark);}
+
+  .agent-name{font-weight:500; font-size:12.5px;}
+  .agent-turno{font-size:10.5px; color:var(--steel); display:block;}
+
+  .section-sub{font-size:12px; color:var(--steel); margin-bottom:14px;}
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:980px){
+    .kpi-row{grid-template-columns:repeat(2,1fr);}
+    .grid-2{grid-template-columns:1fr;}
+    header, main{padding-left:20px; padding-right:20px;}
+    .funnel-step{grid-template-columns:110px 1fr 70px;}
+    table{font-size:11px; min-width:500px;}
+    thead th, tbody td{padding:6px 4px;}
+    .pie-wrapper{width:150px; height:150px;}
+    .pie-chart::after{width:50px; height:50px;}
+    .pie-label{font-size:10px;}
+    .pie-label small{font-size:8px;}
+  }
+  @media(max-width:600px){
+    .kpi-row{grid-template-columns:1fr;}
+    .funnel-step{grid-template-columns:80px 1fr 60px; gap:8px;}
+    .funnel-label{font-size:11px;}
+    .funnel-pct{font-size:10px;}
+    .pie-wrapper{width:130px; height:130px;}
+    .pie-chart::after{width:40px; height:40px;}
+    .pie-label{font-size:9px;}
+    .pie-label small{font-size:7px;}
+    .transfer-container{flex-direction:column; align-items:center;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div>
+      <div class="eyebrow">Reporte de cierre CSB</div>
+      <h1>Cierre de Junio 2026 CSB</h1>
+    </div>
+    <div class="period-pill"><span class="dot"></span> Junio 2026</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- KPI ROW 1 -->
+  <div class="kpi-row" id="kpiRow"></div>
+
+  
+  
+  <!-- KPI ROW 2 -->
+  <div class="section" id="kpiRow1"></div>
+  
+  <!-- GOAL PROGRESS + TRANSFER STATUS -->
+  <div class="grid-2">
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Cumplimiento de meta</div>
+        <div class="section-note">% cumplido sobre meta mensual</div>
+      </div>
+      <div id="goalsWrap"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Estatus de transferencias</div>
+        <div class="section-note" id="transferTotalNote"></div>
+      </div>
+      <div class="transfer-container">
+        <div class="pie-wrapper" id="pieWrapper">
+          <div class="pie-chart" id="pieChart"></div>
+        </div>
+        <div class="status-legend" id="transferLegend"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUNNEL -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Embudo de llamadas</div>
+      <div class="section-note">Conversión por etapa</div>
+    </div>
+    <div class="funnel-wrap" id="funnelWrap"></div>
+  </div>
+
+  <!-- BASES DETAIL -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Detalle de bases trabajadas</div>
+      <div class="section-note"><span id="basesCount"></span> bases</div>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Base</th>
+            <th class="num">Llamadas</th>
+            <th class="num">Abandono</th>
+            <th class="num">% Abandono</th>
+            <th class="num">Abandono Máq.</th>
+            <th class="num">% Abandono Máq.</th>
+            <th class="num">Contacto</th>
+            <th class="num">% Contacto</th>
+            <th class="num">Contacto Efectivo</th>
+            <th class="num">% Contacto Efectivo</th>
+            <th class="num">Interesados</th>
+            <th class="num">% Interesados</th>
+          </tr>
+        </thead>
+        <tbody id="basesBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- AGENTES TABLE -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Desempeño por agente</div>
+      <div class="section-note"><span id="agentsCount"></span> agentes</div>
+    </div>
+    <div class="section-sub">Efectividad = Ventas / Transferencias</div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Agente</th>
+            <th>Turno</th>
+            <th class="num">Llamadas</th>
+            <th class="num">Contacto</th>
+            <th class="num">Contacto Efectivo</th>
+            <th class="num">Interesados</th>
+            <th class="num">Transferencias</th>
+            <th class="num">Ventas</th>
+            <th class="num">Monto Ventas</th>
+            <th class="num center">Efectividad</th>
+          </tr>
+        </thead>
+        <tbody id="agentsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<script>
+/* ======================================================================
+   DATOS 
+   ====================================================================== */
+const DATA = {
+  kpis: [
+    { label:"Monto vendido", value:"$4,793,200.23", sub:"$179,963.66 vs mayo", trend:"top" },
+    { label:"Monto transferido", value:"$10,230,361.45", sub:"$1,180,256.56 vs mayo", trend:"bottom" },
+    { label:"Llamadas realizadas", value:"511,539", sub:"40,907 vs mayo", trend:"" },
+    { label:"Contactabilidad", value:"9.1%", sub:"1% vs mayo", trend:"bottom" },
+  ],
+
+  kpis1: [
+    { label:"Transferencias", value:"$1,224,490.43", sub:"", trend:"" },
+    { label:"Ventas", value:"$547,783.43", sub:"", trend:"" },
+    
+  ],
+
+  goals: [
+    { name:"Transferido", achieved:10230361.45, goal:17468000, unit:"" },
+    { name:"Comprado", achieved:4793200.23, goal:8734000, unit:"" },
+  ],
+
+  funnel: [
+    { label:"Llamadas realizadas", value:511539 },
+    { label:"Contactos", value:46772 },
+    { label:"Contactos efectivos", value:16258 },
+    { label:"Interesados", value:270 },
+    { label:"Transferencias", value:167 },
+    { label:"Vendidas", value:78 },
+  ],
+
+  transfers: [
+    { label:"Compradas", value:78, color:"#1C7C7C" },
+    { label:"En proceso", value:5, color:"#E0972C" },
+    { label:"Rechazada", value:54, color:"#C1543A" },
+    { label:"Sin capacidad", value:30, color:"#6B7A8D" },
+  ],
+
+  bases: [
+    { base:"Pensionados Nuevos T1 2026", llamadas:27262, abandono:320, pAbandono:0.01, mAbandono:7564, pmAbandono:0.28, contacto:2939, pContacto:0.11, contactoEfe:1138, peContacto:0.39, interesados:9, pInteresados:0.01 },
+    { base:"Pensionados Nuevos T2 2026", llamadas:46967, abandono:101, pAbandono:0.00, mAbandono:8262, pmAbandono:0.18, contacto:3525, pContacto:0.08, contactoEfe:1163, peContacto:0.33, interesados:14, pInteresados:0.01 },
+    { base:"Pensionados Nuevos S1 1", llamadas:80201, abandono:500, pAbandono:0.01, mAbandono:17882, pmAbandono:0.22, contacto:6942, pContacto:0.09, contactoEfe:2068, peContacto:0.30, interesados:39, pInteresados:0.02 },
+    { base:"Pensionados Nuevos T2 2025", llamadas:40942, abandono:53, pAbandono:0.00, mAbandono:6846, pmAbandono:0.17, contacto:3367, pContacto:0.08, contactoEfe:1366, peContacto:0.41, interesados:22, pInteresados:0.02 },
+    { base:"Pensionados Nuevos Junio 2026", llamadas:50336, abandono:134, pAbandono:0.00, mAbandono:8834, pmAbandono:0.18, contacto:4392, pContacto:0.09, contactoEfe:1733, peContacto:0.39, interesados:24, pInteresados:0.01 },
+    { base:"Pensionados Nuevos T2 2026 2", llamadas:48292, abandono:115, pAbandono:0.00, mAbandono:8915, pmAbandono:0.18, contacto:4261, pContacto:0.09, contactoEfe:1580, peContacto:0.37, interesados:26, pInteresados:0.02 },
+    { base:"Pensionados Nuevos T4 2025", llamadas:61220, abandono:283, pAbandono:0.00, mAbandono:13648, pmAbandono:0.22, contacto:8189, pContacto:0.13, contactoEfe:2246, peContacto:0.27, interesados:14, pInteresados:0.01 },
+    { base:"Pensionados Nuevos T3 2025", llamadas:28247, abandono:187, pAbandono:0.01, mAbandono:5098, pmAbandono:0.18, contacto:3275, pContacto:0.12, contactoEfe:1482, peContacto:0.45, interesados:52, pInteresados:0.04 },
+    { base:"Pensionados Nuevos Junio 2026 2", llamadas:23958, abandono:145, pAbandono:0.01, mAbandono:5041, pmAbandono:0.21, contacto:2003, pContacto:0.08, contactoEfe:818, peContacto:0.41, interesados:12, pInteresados:0.01 },
+    { base:"Pensionados Nuevos T1 2026 2", llamadas:59147, abandono:117, pAbandono:0.00, mAbandono:10848, pmAbandono:0.18, contacto:4530, pContacto:0.08, contactoEfe:1528, peContacto:0.34, interesados:14, pInteresados:0.01 },
+    { base:"Pensionados Nuevos T2 2026 3", llamadas:39654, abandono:57, pAbandono:0.00, mAbandono:9453, pmAbandono:0.24, contacto:3082, pContacto:0.08, contactoEfe:1028, peContacto:0.33, interesados:13, pInteresados:0.01 },
+  ],
+
+  agents: [
+    { agente:"ARELLANO MARADIAGA PAMELA VALERIA", turno:"MEDIO TIEMPO", llamadas:4467, contacto:4411, contactoEfe:1933, interesados:7, transferencias:9, ventas:5, monto:184000, efectividad:56 },
+    { agente:"BAEZ MONROY WENDY VERONICA", turno:"MEDIO TIEMPO", llamadas:3976, contacto:3383, contactoEfe:1944, interesados:1, transferencias:15, ventas:8, monto:548500, efectividad:53 },
+    { agente:"CASTRO MORALES AIDE SILVIA", turno:"TIEMPO COMPLETO", llamadas:4640, contacto:3636, contactoEfe:1801, interesados:17, transferencias:19, ventas:12, monto:1281613.36, efectividad:63 },
+    { agente:"FLORES RAMIREZ ADRIANA ANGELICA", turno:"MEDIO TIEMPO", llamadas:3887, contacto:3543, contactoEfe:1540, interesados:7, transferencias:20, ventas:9, monto:318342.92, efectividad:45 },
+    { agente:"GARCIA ZARAZUA YUNUEN", turno:"TIEMPO COMPLETO", llamadas:5040, contacto:4976, contactoEfe:1096, interesados:31, transferencias:11, ventas:4, monto:163000, efectividad:36 },
+    { agente:"GOMEZ ZARAZUA JESSICA", turno:"TIEMPO COMPLETO", llamadas:4699, contacto:4510, contactoEfe:777, interesados:9, transferencias:9, ventas:5, monto:300500, efectividad:56 },
+    { agente:"LOPEZ FLORES MARIA GUADALUPE", turno:"TIEMPO COMPLETO", llamadas:6262, contacto:4865, contactoEfe:2143, interesados:19, transferencias:26, ventas:14, monto:614164.16, efectividad:54 },
+    { agente:"MAGALY HERNADEZ", turno:"MEDIO TIEMPO", llamadas:4925, contacto:4679, contactoEfe:1674, interesados:33, transferencias:11, ventas:5, monto:185000, efectividad:45 },
+    { agente:"NADIRAM RESENDIZ", turno:"MEDIO TIEMPO", llamadas:5028, contacto:4672, contactoEfe:752, interesados:17, transferencias:6, ventas:2, monto:75000, efectividad:33 },
+    { agente:"PACHECO GONZALEZ JAIME", turno:"TIEMPO COMPLETO", llamadas:4208, contacto:3717, contactoEfe:575, interesados:87, transferencias:16, ventas:4, monto:185500, efectividad:25 },
+    { agente:"PADILLA TORRES ERICA TERESA", turno:"TIEMPO COMPLETO", llamadas:640, contacto:346, contactoEfe:114, interesados:4, transferencias:11, ventas:3, monto:64065.07, efectividad:27 },
+    { agente:"SANCHEZ ARELLANO JATZIRI NOHEMI", turno:"MEDIO TIEMPO", llamadas:3048, contacto:2963, contactoEfe:1305, interesados:18, transferencias:10, ventas:5, monto:810000, efectividad:50 },
+    { agente:"ZAVALA SANCHEZ JESUS ANGEL", turno:"MEDIO TIEMPO", llamadas:1250, contacto:1028, contactoEfe:597, interesados:19, transferencias:5, ventas:1, monto:43000, efectividad:20 },
+  ],
+};
+
+ /* ====================== FORMAT HELPERS ====================== */
+  function fmt(n) {
+    if (typeof n === 'string') return n;
+    return n.toLocaleString('es-MX');
+  }
+
+  function fmtCurrency(n) {
+    return '$' + n.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function fmtPct(n) {
+    return (n * 100).toFixed(1) + '%';
+  }
+
+  function fmtPctInt(n) {
+    return n + '%';
+  }
+
+  /* ====================== RENDER: KPIs ====================== */
+  // Renderizar primera fila (kpis originales)
+  const kpiRow = document.getElementById('kpiRow');
+  DATA.kpis.forEach(k => {
+    let trendHtml = '';
+    if (k.trend === 'top') {
+      trendHtml = '<span class="trend-icon trend-up">▲</span>';
+    } else if (k.trend === 'bottom') {
+      trendHtml = '<span class="trend-icon trend-down">▼</span>';
+    }
+    kpiRow.innerHTML += `
+      <div class="kpi-card">
+        <div class="kpi-label">${k.label}</div>
+        <div class="kpi-value">${k.value}</div>
+        <div class="kpi-sub flat">${trendHtml} ${k.sub || ''}</div>
+      </div>`;
+  });
+
+  // Renderizar segunda fila (kpis1)
+  const kpiRow1 = document.getElementById('kpiRow1');
+  DATA.kpis1.forEach(k => {
+    let trendHtml = '';
+    if (k.trend === 'top') {
+      trendHtml = '<span class="trend-icon trend-up">▲</span>';
+    } else if (k.trend === 'bottom') {
+      trendHtml = '<span class="trend-icon trend-down">▼</span>';
+    }
+    kpiRow1.innerHTML += `
+      <div class="kpi-card">
+        <div class="kpi-label">${k.label}</div>
+        <div class="kpi-value">${k.value}</div>
+        <div class="kpi-sub flat">${trendHtml} ${k.sub || ''}</div>
+      </div>`;
+  });
+
+  /* ====================== RENDER: Goal progress ====================== */
+  const goalsWrap = document.getElementById('goalsWrap');
+  DATA.goals.forEach(g => {
+    const pct = Math.min(100, (g.achieved / g.goal) * 100);
+    const warn = pct < 85;
+    goalsWrap.innerHTML += `
+      <div class="goal-row">
+        <div class="goal-top">
+          <div class="goal-name">${g.name}</div>
+          <div class="goal-nums"><b>${fmtCurrency(g.achieved)}</b> / ${fmtCurrency(g.goal)} &nbsp;·&nbsp; ${pct.toFixed(1)}%</div>
+        </div>
+        <div class="goal-track">
+          <div class="goal-fill ${warn ? 'warn' : ''}" style="width:${Math.max(2, pct)}%"></div>
+        </div>
+      </div>`;
+  });
+
+  /* ====================== RENDER: Funnel ====================== */
+  const funnelWrap = document.getElementById('funnelWrap');
+  const maxVal = DATA.funnel[0].value;
+  DATA.funnel.forEach((f, i) => {
+    const widthPct = Math.max(4, (f.value / maxVal) * 100);
+    const stepPct = i === 0 ? 100 : ((f.value / DATA.funnel[i - 1].value) * 100).toFixed(1);
+    funnelWrap.innerHTML += `
+      <div class="funnel-step">
+        <div class="funnel-label">${f.label}</div>
+        <div class="funnel-bar-bg"><div class="funnel-bar" style="width:${widthPct}%">${fmt(f.value)}</div></div>
+        <div class="funnel-pct">${i === 0 ? '&nbsp;' : '<b>' + stepPct + '%</b>'}</div>
+      </div>`;
+  });
+
+  /* ====================== RENDER: Transfer status ====================== */
+  const transferTotal = DATA.transfers.reduce((a, b) => a + b.value, 0);
+  document.getElementById('transferTotalNote').textContent = `${fmt(transferTotal)} transferencias totales`;
+
+  // Calcular grados para el pie chart CSS
+  let cumulativeDeg = 0;
+  const pieChart = document.getElementById('pieChart');
+  const pieWrapper = document.getElementById('pieWrapper');
+  
+  // Construir datos con ángulos
+  const conicParts = DATA.transfers.map(t => {
+    const pct = (t.value / transferTotal) * 100;
+    const deg = (t.value / transferTotal) * 360;
+    const start = cumulativeDeg;
+    cumulativeDeg += deg;
+    return {
+      label: t.label,
+      color: t.color,
+      value: t.value,
+      pct: pct,
+      start: start,
+      end: cumulativeDeg,
+      midAngle: start + (deg / 2)
+    };
+  });
+
+  // Construir el conic-gradient
+  let gradientParts = conicParts.map(p => {
+    return `${p.color} ${p.start}deg ${p.end}deg`;
+  });
+  pieChart.style.background = `conic-gradient(${gradientParts.join(', ')})`;
+
+  // Agregar etiquetas de porcentaje en cada segmento
+  const radius = 90; // radio en píxeles (mitad del tamaño)
+  const centerX = 90;
+  const centerY = 90;
+  
+  conicParts.forEach(p => {
+    // Solo mostrar etiquetas si el segmento es lo suficientemente grande (> 5%)
+    if (p.pct < 5) return;
+    
+    const angleRad = (p.midAngle - 90) * Math.PI / 180;
+    const labelRadius = radius * 0.65;
+    const x = centerX + labelRadius * Math.cos(angleRad);
+    const y = centerY + labelRadius * Math.sin(angleRad);
+    
+    const label = document.createElement('div');
+    label.className = 'pie-label';
+    label.style.left = x + 'px';
+    label.style.top = y + 'px';
+    label.innerHTML = `${p.pct.toFixed(1)}%<small>${p.label}</small>`;
+    pieWrapper.appendChild(label);
+  });
+
+  // Leyenda
+  const legend = document.getElementById('transferLegend');
+  DATA.transfers.forEach(t => {
+    const pct = ((t.value / transferTotal) * 100).toFixed(1);
+    legend.innerHTML += `
+      <div>
+        <div class="legend-item">
+          <span class="legend-swatch" style="background:${t.color}"></span>
+          ${t.label}
+          <b>${pct}%</b>
+        </div>
+        <div class="legend-sub">${fmt(t.value)}</div>
+      </div>`;
+  });
+
+  /* ====================== RENDER: Bases table ====================== */
+  const basesBody = document.getElementById('basesBody');
+  document.getElementById('basesCount').textContent = DATA.bases.length;
+
+  DATA.bases.forEach(b => {
+    basesBody.innerHTML += `
+      <tr>
+        <td><span class="campaign-tag">${b.base}</span></td>
+        <td class="num">${fmt(b.llamadas)}</td>
+        <td class="num">${fmt(b.abandono)}</td>
+        <td class="num">${fmtPct(b.pAbandono)}</td>
+        <td class="num">${fmt(b.mAbandono)}</td>
+        <td class="num">${fmtPct(b.pmAbandono)}</td>
+        <td class="num">${fmt(b.contacto)}</td>
+        <td class="num">${fmtPct(b.pContacto)}</td>
+        <td class="num">${fmt(b.contactoEfe)}</td>
+        <td class="num">${fmtPct(b.peContacto)}</td>
+        <td class="num">${fmt(b.interesados)}</td>
+        <td class="num">${fmtPct(b.pInteresados)}</td>
+      </tr>`;
+  });
+
+  /* ====================== RENDER: Agents table ====================== */
+  const agentsBody = document.getElementById('agentsBody');
+  document.getElementById('agentsCount').textContent = DATA.agents.length;
+
+  DATA.agents.forEach(a => {
+    let badge = { cls: 'good', txt: 'Óptimo' };
+    if (a.efectividad < 30) badge = { cls: 'bad', txt: 'Bajo' };
+    else if (a.efectividad < 45) badge = { cls: 'warn', txt: 'Regular' };
+
+    agentsBody.innerHTML += `
+      <tr>
+        <td><span class="agent-name">${a.agente}</span></td>
+        <td><span class="agent-turno">${a.turno}</span></td>
+        <td class="num">${fmt(a.llamadas)}</td>
+        <td class="num">${fmt(a.contacto)}</td>
+        <td class="num">${fmt(a.contactoEfe)}</td>
+        <td class="num">${fmt(a.interesados)}</td>
+        <td class="num">${fmt(a.transferencias)}</td>
+        <td class="num">${fmt(a.ventas)}</td>
+        <td class="num">${fmtCurrency(a.monto)}</td>
+        <td class="center"><span class="badge ${badge.cls}">${fmtPctInt(a.efectividad)}</span></td>
+      </tr>`;
+  });
+</script>
+
+</body>
+</html>
